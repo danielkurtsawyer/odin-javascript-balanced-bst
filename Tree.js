@@ -147,6 +147,70 @@ class Tree {
 
     return levelOrderArray;
   }
+
+  // traverses the tree in depth-first inorder
+  inOrder(callback = null){
+    const inOrderArray = [];
+
+    function traverseInOrder(root){
+      if(root === null) return;
+      // go left
+      traverseInOrder(root.leftChild);
+      // do something to the data at the current node
+      if(callback){
+        callback(root.data);
+      }
+      inOrderArray.push(root.data);
+      // go right
+      traverseInOrder(root.rightChild);
+    }
+    traverseInOrder(this._root);
+    return inOrderArray;
+  }
+
+  // traverses the tree in depth-first preorder
+  preOrder(callback = null){
+    const preOrderArray = [];
+
+    function traversePreOrder(root){
+      if(root === null) return;
+
+      // do something to the data at the current node
+      if(callback){
+        callback(root.data);
+      }
+      preOrderArray.push(root.data);
+
+      // go left
+      traversePreOrder(root.leftChild);
+      // go right
+      traversePreOrder(root.rightChild);
+    }
+    traversePreOrder(this._root);
+    return preOrderArray;
+  }
+
+  // traverses the tree in depth-first post-order
+  postOrder(callback = null){
+    const postOrderArray = [];
+
+    function traversePostOrder(root){
+      if(root === null) return;
+
+      // go left
+      traversePostOrder(root.leftChild);
+      // go right
+      traversePostOrder(root.rightChild);
+
+      // do something to the data at the current node
+      if(callback){
+        callback(root.data);
+      }
+      postOrderArray.push(root.data);
+    }
+    traversePostOrder(this._root);
+    return postOrderArray;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -199,3 +263,14 @@ console.log(tree1.find(3245));
 
 // levelOrder traversal
 console.log(tree1.levelOrder(console.log));
+
+// inOrder traversal
+console.log(tree1.inOrder(console.log));
+
+// preOrder traversal
+console.log(tree1.preOrder(console.log));
+
+// postOrder traversal
+console.log(tree1.postOrder(console.log));
+
+
