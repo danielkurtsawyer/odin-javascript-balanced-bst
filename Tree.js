@@ -38,10 +38,8 @@ class Tree {
 
     // if not, recurse down the tree
     if(value < root.data){
-      console.log('left');
       root.leftChild = this.insertRec(root.leftChild, value);
     } else if(value > root.data){
-      console.log('right');
       root.rightChild = this.insertRec(root.rightChild, value);
     }
 
@@ -49,8 +47,51 @@ class Tree {
   }
 
   deleteItem(value){
-
+    this._root = this.deleteItemRec(this._root, value);
   }
+
+  deleteItemRec(root, value){
+    // base case
+    if(root === null){
+      return root;
+    }
+
+    // recurse down tree
+    // if the value is smaller than the root, then it lies in the left subtree
+    if(value < root.data){
+      root.leftChild = this.deleteItemRec(root.leftChild, value);
+    } 
+    // if the value is greater than the root, then it lies in the right subtree
+    else if(value > root.data){
+      root.rightChild = this.deleteItemRec(root.rightChild, value);
+    }
+    // if the value matches the root, then this is the node to be deleted
+    else {
+      // for nodes with only one child or no children
+      if(root.leftChild === null){
+        return root.rightChild;
+      } else if(root.rightChild === null){
+        return root.leftChild;
+      }
+
+      // for nodes with two children: get the inorder successor (smallest in the right subtree)
+      root.data = this.minValue(root.rightChild);
+
+      // delete the inorder successor
+      root.rightChild = this.deleteItemRec(root.rightChild, root.data);
+    }
+    return root;
+  }
+
+  // helper function for deletion - finds the inorder successor from a subtree
+  minValue(node) {
+    let minv = node.data;
+    while (node.leftChild !== null) {
+        minv = node.leftChild.data;
+        node = node.leftChild;
+    }
+    return minv;
+}
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -76,9 +117,22 @@ tree1.insert(6);
 prettyPrint(tree1.root);
 
 // test deletion at different depth levels
+
 // leaf 
 tree1.deleteItem(6);
-// middle of tree
+prettyPrint(tree1.root);
+
+// node with one child
 tree1.deleteItem(5);
+prettyPrint(tree1.root);
+
+// node with two children
+tree1.deleteItem(4);
+prettyPrint(tree1.root);
+// node with two children
+tree1.deleteItem(67);
+prettyPrint(tree1.root);
+
 // root
 tree1.deleteItem(8);
+prettyPrint(tree1.root);
