@@ -1,4 +1,4 @@
-class Node {
+export default class Node {
   constructor(data, leftChild = null, rightChild = null){
     this._data = data;
     this._leftChild = leftChild;
