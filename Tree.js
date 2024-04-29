@@ -91,7 +91,62 @@ class Tree {
         node = node.leftChild;
     }
     return minv;
-}
+  }
+
+  // returns the node with the given value, null if not found
+  find(value){
+    let node = this._root;
+
+    while(node !== null){
+      if(node.data === value){
+        return node;
+      } else if(value < node.data){
+        node = node.leftChild;
+      } else {
+        node = node.rightChild;
+      }
+    }
+    // value not found
+    return null;
+  }
+
+  // traverses the tree in breadth-first level order
+  // optional callback parameter
+  //      if provided, each node will be used as an argument to the callback
+  //      if not, returns an array of values 
+  levelOrder(callback = null){
+    // if root is null, then return null
+    if(this._root === null){
+      return null;
+    }
+
+    // use an array to act as a queue data structure (FIFO)
+    const queue = [this._root];
+    // another array to hold the in-order data
+    const levelOrderArray = [];
+
+    while(queue.length > 0){
+      // dequeue the next in-order node from the queue
+      let node = queue.shift();
+      // if there's a callback, call it back
+      if(callback){
+        callback(node.data);
+      }
+      // push the node's data to the end of the levelOrderArray
+      levelOrderArray.push(node.data);
+
+      // enqueue the left child, then right child
+      // ensure that the node has each of those children first, though
+      if(node.leftChild){
+        queue.push(node.leftChild);
+      }
+      if(node.rightChild){
+        queue.push(node.rightChild);
+      }
+    }
+
+    return levelOrderArray;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -136,3 +191,11 @@ prettyPrint(tree1.root);
 // root
 tree1.deleteItem(8);
 prettyPrint(tree1.root);
+
+// find success
+console.log(tree1.find(324));
+// find failure
+console.log(tree1.find(3245));
+
+// levelOrder traversal
+console.log(tree1.levelOrder(console.log));
