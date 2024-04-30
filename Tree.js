@@ -230,6 +230,27 @@ class Tree {
     // easiest solution using the existing height method. Might not be the most efficient, but it works. 
     return this.height(this._root) - this.height(node);
   }
+
+  // checks if the tree is balanced
+  //      i.e. if the difference between heights of left and right subtrees of every node is not more than one
+  isBalanced(node = this._root){
+    if(node === null) return true;
+    if(
+      Math.abs(this.height(node.leftChild), this.height(node.rightChild)) <= 1 
+      && this.isBalanced(node.leftChild) 
+      && this.isBalanced(node.rightChild)
+    ){
+      return true;
+    } else{
+      return false;
+    }
+  }
+
+  // rebalances an unbalanced tree
+  rebalance(){
+    const inOrderArray = this.inOrder();
+    this._root = this.buildTree(inOrderArray, 0, inOrderArray.length-1);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -302,3 +323,12 @@ console.log(tree1.depth(tree1.root));
 console.log(tree1.depth(tree1.find(70)));
 console.log(tree1.depth(tree1.find(324)));
 console.log(tree1.depth(tree1.find(6345)));
+
+//isBalanced
+prettyPrint(tree1.root);
+console.log(tree1.isBalanced());
+
+// rebalance
+tree1.rebalance();
+prettyPrint(tree1.root);
+console.log(tree1.isBalanced());
