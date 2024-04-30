@@ -1,6 +1,6 @@
 import Node from "./Node.js";
 
-class Tree {
+export default class Tree {
   constructor(array){
     // sorts the array, and removes duplicates by converting to a set and back to an array
     // it is necessary to sort using a function since sort's default behavior is for strings
@@ -16,7 +16,7 @@ class Tree {
     if(start>end) return null;
     // integer division is not built in so we have to round down
     const mid = Math.floor((start+end)/2);
-    console.log(mid, array[mid]);
+    // console.log(mid, array[mid]);
     const root = new Node(array[mid]);
     
     root.leftChild = this.buildTree(array, start, mid-1);
@@ -235,8 +235,9 @@ class Tree {
   //      i.e. if the difference between heights of left and right subtrees of every node is not more than one
   isBalanced(node = this._root){
     if(node === null) return true;
+    // console.log(node, this.height(node.leftChild), this.height(node.rightChild));
     if(
-      Math.abs(this.height(node.leftChild), this.height(node.rightChild)) <= 1 
+      Math.abs(this.height(node.leftChild) - this.height(node.rightChild)) <= 1 
       && this.isBalanced(node.leftChild) 
       && this.isBalanced(node.rightChild)
     ){
@@ -268,6 +269,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // testing class behavior 
 
+/*
 const tree1 = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 // test buildTree
 prettyPrint(tree1.root);
@@ -334,3 +336,4 @@ console.log(tree1.isBalanced());
 tree1.rebalance();
 prettyPrint(tree1.root);
 console.log(tree1.isBalanced());
+*/
