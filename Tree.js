@@ -211,6 +211,25 @@ class Tree {
     traversePostOrder(this._root);
     return postOrderArray;
   }
+
+  // returns the given node's height 
+  //      height is the number of edges in the longest path from a given node to a leaf node
+  height(node){
+    // base case
+    if(node === null){
+      return -1;
+    }
+
+    // recursive case, every level, add one, and then add to it the larger of the two subtrees
+    return 1 + Math.max(this.height(node.leftChild), this.height(node.rightChild));
+  }
+
+  // returns the given node's depth
+  //      depth is the number of edges in the path from a given node to the tree's root node
+  depth(node){
+    // easiest solution using the existing height method. Might not be the most efficient, but it works. 
+    return this.height(this._root) - this.height(node);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -273,4 +292,13 @@ console.log(tree1.preOrder(console.log));
 // postOrder traversal
 console.log(tree1.postOrder(console.log));
 
+// height
+console.log(tree1.height(tree1.find(9)));
 
+prettyPrint(tree1.root);
+
+// depth
+console.log(tree1.depth(tree1.root));
+console.log(tree1.depth(tree1.find(70)));
+console.log(tree1.depth(tree1.find(324)));
+console.log(tree1.depth(tree1.find(6345)));
